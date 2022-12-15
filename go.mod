@@ -1,4 +1,4 @@
-module bubbles
+module github.com/franklincm/bubbles
 
 go 1.19
 
