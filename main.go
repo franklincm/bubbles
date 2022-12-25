@@ -1,10 +1,11 @@
 package main
 
 import (
-	commandprompt "bubbles/commandPrompt"
 	"fmt"
 	"os"
 	"strings"
+
+	commandprompt "github.com/franklincm/bubbles/commandPrompt"
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"

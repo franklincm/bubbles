@@ -38,7 +38,7 @@ func (m Model) PromptInput() tea.Msg {
 }
 
 func (m Model) PromptEditing() tea.Msg {
-	return PromptEditing((m.editing))
+	return PromptEditing(m.editing)
 }
 
 func New() Model {
