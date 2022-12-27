@@ -30,6 +30,7 @@ type model struct {
 func initialModel() model {
 
 	prompt := commandprompt.New()
+	prompt.InputShow = key.NewBinding(key.WithKeys(":"))
 
 	return model{
 		prompt: prompt,

@@ -7,27 +7,17 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var backspace = key.NewBinding(
-	key.WithKeys("backspace"),
-)
-
-var commandKey = key.NewBinding(
-	key.WithKeys(":"),
-)
-
-var enter = key.NewBinding(
-	key.WithKeys("enter"),
-)
-
-var escKey = key.NewBinding(
-	key.WithKeys("esc"),
-)
-
 type Model struct {
 	textinput textinput.Model
 	style     lipgloss.Style
 	editing   bool
 	input     string
+
+	InputAbort  key.Binding
+	InputAccept key.Binding
+	InputShow   key.Binding
+
+	Prompt string
 }
 
 type PromptInput string
@@ -48,6 +38,10 @@ func New() Model {
 	return Model{
 		textinput: ti,
 		style:     lipgloss.NewStyle(),
+
+		InputAbort:  key.NewBinding(key.WithKeys("esc")),
+		InputAccept: key.NewBinding(key.WithKeys("enter")),
+		InputShow:   key.NewBinding(key.WithKeys(":")),
 	}
 }
 
@@ -63,7 +57,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if key.Matches(msg, commandKey) && !m.editing {
+		if key.Matches(msg, m.InputShow) && !m.editing {
 			m.editing = true
 			m.textinput.Focus()
 			m.textinput, cmd = m.textinput.Update(msg)
@@ -71,13 +65,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmd = m.PromptEditing
 			return m, cmd
 
-		} else if key.Matches(msg, escKey) {
+		} else if key.Matches(msg, m.InputAbort) {
 			m.textinput.Reset()
 			m.textinput.Blur()
 			m.editing = false
 			cmd = m.PromptEditing
 			return m, cmd
-		} else if key.Matches(msg, enter) {
+		} else if key.Matches(msg, m.InputAccept) {
 			m.input = m.textinput.Value()
 			m.textinput.Reset()
 			m.textinput.Blur()
