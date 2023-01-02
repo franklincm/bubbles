@@ -31,9 +31,9 @@ func (m Model) PromptEditing() tea.Msg {
 	return PromptEditing(m.editing)
 }
 
-func New() Model {
+func New(prefix string) Model {
 	ti := textinput.New()
-	ti.Prompt = "» "
+	ti.Prompt = prefix
 
 	return Model{
 		textinput: ti,
